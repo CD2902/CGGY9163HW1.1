@@ -8,7 +8,7 @@
 
 
 #include "giftcard.h"
-
+# include <string.h>  //CD update add string header
 #include <stdio.h>
 #include <strings.h>
 
