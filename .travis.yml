@@ -1,5 +1,4 @@
 language: c
 compiler:
 -gcc
-script:
-- gcc -o giftcardexamplewriter giftcardexamplewriter.c && ./giftcardexamplewriter
+script: make
