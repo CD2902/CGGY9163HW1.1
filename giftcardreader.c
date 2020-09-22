@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <strings.h>
 
+int get_gift_card_value(struct this_gift_card *thisone);
+
 // interpreter for THX-1138 assembly
 void animate(char *msg, unsigned char *program) {
     unsigned char regs[16];
