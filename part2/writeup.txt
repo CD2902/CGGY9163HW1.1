@@ -1,0 +1,7 @@
+Crash1.gft
+----------
+
+- Inside the giftcardexamplewriter.c replace the value to -1 from 116 in line 25 so it can write a -1 formated byte writtin in the gft file. That giftcardreader program will read the gft and wherever the -1 formated data was store (first character of the text file) it will pass in a variable and be use to allocated memory for file to read within fread. Since within the argument num_byte will be casted as a size_t. size t is an unsigned intenger thus making any value with a negative will change to a highest number the value type can store inside the address space. Fread is going read out of bounds the expcted filesize causeing  an access violation. 
+
+
+ 
