@@ -185,25 +185,31 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 
 		struct gift_card_data *gcd_ptr;
 		/* JAC: Why aren't return types checked? */
+
+
 		fread(&ret_val->num_bytes, 4,1, input_fd);
 
+                        if ( ret_val->num_bytes < 0 )
+                {
+                         printf("Rejecting Negative Values\n");
+         	         return  NULL;
+                 }
+
+
 		// Make something the size of the rest and read it in
-		ptr = malloc(ret_val->num_bytes);
+	
+		ptr = malloc(ret_val->num_bytes);		
+
 		fread(ptr, ret_val->num_bytes, 1, input_fd);
 
         optr = ptr-4;
 
-		gcd_ptr = ret_val->gift_card_data = malloc(sizeof(struct gift_card_data));
-		gcd_ptr->merchant_id = ptr;
-		ptr += 32;	
-//		printf("VD: %d\n",(int)ptr - (int) gcd_ptr->merchant_id);
-		gcd_ptr->customer_id = ptr;
-		ptr += 32;	
-		/* JAC: Something seems off here... */
-		gcd_ptr->number_of_gift_card_records = *((char *)ptr);
-		ptr += 4;
-
-		gcd_ptr->gift_card_record_data = (void *)malloc(gcd_ptr->number_of_gift_card_records*sizeof(void*));
+		gcd_ptr = ret_val->gift_card_data = malloc(sizeof(struct gift_card_data)); gcd_ptr->merchant_id = 
+		ptr; ptr += 32;
+ // if ( ret_val->num_bytes < 0 )// printf("VD: %d\n",(int)ptr - (int) gcd_ptr->merchant_id); 
+		gcd_ptr->customer_id = ptr; ptr += 32; /* JAC: Something seems off here... */ 
+		gcd_ptr->number_of_gift_card_records = *((char *)ptr); ptr += 4;
+// { gcd_ptr->gift_card_record_data = (void *)malloc(gcd_ptr->number_of_gift_card_records*sizeof(void*));
 
 		// Now ptr points at the gift card recrod data
 		for (int i=0; i<=gcd_ptr->number_of_gift_card_records; i++){
@@ -265,7 +271,18 @@ int main(int argc, char **argv) {
     // BDG: no argument checking?
 	FILE *input_fd = fopen(argv[2],"r");
 	thisone = gift_card_reader(input_fd);
-	if (argv[1][0] == '1') print_gift_card_info(thisone);
+	if (argv[1][0] == '1'){
+//		 print_gift_card_info(thisone);
+		if(thisone != NULL)
+	{
+		print_gift_card_info(thisone);
+	}
+	else
+	{
+		printf("There is notthing in the gift card.\n");
+	}
+
+	}
     else if (argv[1][0] == '2') gift_card_json(thisone);
 
 	return 0;
