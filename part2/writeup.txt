@@ -9,7 +9,7 @@ When testing the giftcardreader program and the creation of example gft file, Th
 -----------
 
 
-Pending....
+Pending...
 
 
 ----------
