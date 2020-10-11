@@ -1,22 +1,18 @@
 Crash1.gft
 ---------
                                                                                                         
-- Inside the giftcardexamplewriter.c replace the value to -1 from 116 in line 25 so it can write a -1 formated byte writtin in the gft file. That giftcardreader program will read the gft and wherever the -1 formated data was store (first character of the text file) it will pass in a variable and be use to allocated memory for file to read within fread. Since within the argument num_byte will be casted as a size_t. size t is an unsigned intenger thus making any value with a negative will change to a highest number the value type can store inside the address space. Fread is going read out of bounds the expcted filesize causeing  an access violation.                                                                         
+When testing the giftcardreader program and the creation of example gft file, There something intresting about the first character of the file when it was read. one unusal case is that there is a t in front of the GiftCard title even though it was not even called. Investingating the code using gdb that t represent 116 in integer which was set within the giftcardexamplewriter program as num_byte. Looking at the reader program it seems that that 116 integer is used to defined how much memory should be allocated for fread to read within the file boundiries. Since inside the giftcardreader program num_byte is being used to allocate memory by using malloc. We can cause undisrible issue in this case. By replacing the value to -1 and create the gft file which output a missing character that represent -1 inside the gft file. That giftcardreader program will read the gft and whenever the -1 formated data was store (first character of the text file) it will pass in a variable and be use to allocated memory for file to read within fread. Since within the argument num_byte will be casted as a size_t. size t is an unsigned intenger thus making any value with a negative will change to a highest number the value type can store inside the address space. Fread is going read out of bounds the expcted filesize causeing  an access violation.                                                                         
                                                                                                         
-                                                                                                        
-Crash2.gft                                                                                              
----------
+                                                                                                       
+----------                                                                                                      
+|Crash2.gft|                                                                                              
+-----------
 
 
 Pending....
 
 
-
-
-
-
-
-
-hang.gft
----------
- - Inside the giftcardexamplewriter.c I 
+----------
+|hang.gft|
+----------
+Inside giftcardreader.c there is an intreasting case when the data of the file is printed for the user by the print_gift_card_info funtion. When changing examplegcd.number_of_gift_card_records = 1 to examplegcd.number_of_gift_card_records = 3, it activates a different if condition that calls in another function call animate. animate has an intresting while loop inside it that can cause the program to hang. it seems that in case 0x09 it  keeps increment the memory location until it passes the memory location of program + 256. Main issue inside the case is passed a signed character. a character hold a byte which 8 bit, if we set a bit in front of the binary data for a singed character it would read it as an negative. In the end of the wile loop pc will go up 3 memeory location of its type, This can make it go back by moving 3 memory location down by using the negative bit for signed char. Passing 253 to program for args to pass as -3 will cause the pc to 3 memory location dow while at the end of the loop it goes 3 memory location up causing it to keep running forever. To fix this issue, change pc += (char)arg1 to (unsigned char) work becuase unsigned type does not accept negative numbers. 
