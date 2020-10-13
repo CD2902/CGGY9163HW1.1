@@ -1,15 +1,16 @@
 
 
--------------
-|fuzzer1.gft|
--------------
-Same as the previous hang with the cases but this one is inide a different case. add a unsigned char instead of a char resolved the issue. 
+-------------------
+|fuzzer1.gft (Hang)|
+-------------------
+
+Using afl-fuzz to create new testcases for my giftreader program showed a alot of hangs. There was alot of false positives on these testcases when runing the giftcardreader. Luckly one of the files showed a hang. Using gdb I noticed that the hang occured in a different case statement as in the previous patch hang.gft crash I created. Simply adding a unsinged character resolved the issue. It seems that there was a byte data in the file that had a negative value as well to cause the file to hang when one of the variable was incremented by a variable. Changing to char to unsinged char fix the issue not allowing negative value within the address space.
 
 
 
 
--------------
-|fuzzer2.gft|
-------------
-stack smashing detected means there must be some variable memory location which causes the stack structure to crash
 
+---------------------
+|fuzzer2.gft (Crash)|
+--------------------
+Found a test case that cause a access violation crash. No current soultion on resolving the file. The crash resides in the void print_gift_card_info(struct this_gift_card *thisone)  and int function int get_gift_card_value(struct this_gift_card *thisone)  when running it on gdb. I tried many strategies by returning null on empty data but failed. I treied not using the int get_gift_card_value and created an increament value to replace the function and using within the print_gift_card_info function but failed. It seems all the data within the gft file was printed succesfully but at the end there is a sgementation fault. I beleive there is a variable is accessing mememory outside the program causing the Operating System to return an access violtion error prevent the program to access other processes.  
