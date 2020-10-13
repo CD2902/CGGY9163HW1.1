@@ -1,0 +1,15 @@
+
+
+-------------
+|fuzzer1.gft|
+-------------
+Same as the previous hang with the cases but this one is inide a different case. add a unsigned char instead of a char resolved the issue. 
+
+
+
+
+-------------
+|fuzzer2.gft|
+------------
+stack smashing detected means there must be some variable memory location which causes the stack structure to crash
+
