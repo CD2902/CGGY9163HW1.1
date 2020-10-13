@@ -103,8 +103,8 @@ void print_gift_card_info(struct this_gift_card *thisone) {
 		}
 	}
 	
-	printf("  Total value: %d\n\n",ret);
-//	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
+//	printf("  Total value: %d\n\n",ret);
+	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
 }
 
 // Added to support web functionalities
