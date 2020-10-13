@@ -69,22 +69,24 @@ done:
 }
 
 void print_gift_card_info(struct this_gift_card *thisone) {
+	
 	struct gift_card_data *gcd_ptr;
 	struct gift_card_record_data *gcrd_ptr;
 	struct gift_card_amount_change *gcac_ptr;
     struct gift_card_program *gcp_ptr;
-
 	gcd_ptr = thisone->gift_card_data;
 	printf("   Merchant ID: %32.32s\n",gcd_ptr->merchant_id);
 	printf("   Customer ID: %32.32s\n",gcd_ptr->customer_id);
 	printf("   Num records: %d\n",gcd_ptr->number_of_gift_card_records);
+	int ret = 0; 
 	for(int i=0;i<gcd_ptr->number_of_gift_card_records; i++) {
   		gcrd_ptr = (struct gift_card_record_data *) gcd_ptr->gift_card_record_data[i];
 		if (gcrd_ptr->type_of_record == 1) {
 			printf("      record_type: amount_change\n");
 			gcac_ptr = gcrd_ptr->actual_record;
 			printf("      amount_added: %d\n",gcac_ptr->amount_added);
-			if (gcac_ptr->amount_added>0) {
+			ret += gcac_ptr->amount_added;
+				if (gcac_ptr->amount_added>0) {
 				printf("      signature: %32.32s\n",gcac_ptr->actual_signature);
 			}
 		}	
@@ -100,7 +102,9 @@ void print_gift_card_info(struct this_gift_card *thisone) {
             animate(gcp_ptr->message, gcp_ptr->program);
 		}
 	}
-	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
+	
+	printf("  Total value: %d\n\n",ret);
+//	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
 }
 
 // Added to support web functionalities
@@ -154,12 +158,21 @@ void gift_card_json(struct this_gift_card *thisone) {
 }
 
 int get_gift_card_value(struct this_gift_card *thisone) {
+
+/*    if(thisone == NULL){
+        printf("Got a null giftcard.\n");
+        return -1;
+    }*/
 	struct gift_card_data *gcd_ptr;
 	struct gift_card_record_data *gcrd_ptr;
 	struct gift_card_amount_change *gcac_ptr;
 	int ret_count = 0;
 
 	gcd_ptr = thisone->gift_card_data;
+ /*   if(gcd_ptr == NULL){
+        printf("Got a null giftcard pointer.\n");
+        return -1; 
+    }*/
 	for(int i=0;i<gcd_ptr->number_of_gift_card_records; i++) {
   		gcrd_ptr = (struct gift_card_record_data *) gcd_ptr->gift_card_record_data[i];
 		if (gcrd_ptr->type_of_record == 1) {
@@ -169,8 +182,6 @@ int get_gift_card_value(struct this_gift_card *thisone) {
 	}
 	return ret_count;
 }
-
-
 
 /* JAC: input_fd is misleading... It's a FILE type, not a fd */
 struct this_gift_card *gift_card_reader(FILE *input_fd) {
