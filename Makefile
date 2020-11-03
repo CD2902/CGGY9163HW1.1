@@ -7,7 +7,7 @@ giftcardreader: giftcardreader.c
 	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 part3/cov2.gft
 	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 part3/fuzzer1.gft
 	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 2 part3/fuzzer1.gft
-	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 part3/fuzzer1.gft
+	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 part3/fuzzer2.gft
 	gcc -o giftcardreader giftcardreader.c && ./giftcardreader 2 part3/fuzzer2.gft
 
 
