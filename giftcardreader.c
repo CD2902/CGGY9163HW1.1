@@ -292,7 +292,19 @@ int main(int argc, char **argv) {
 		    printf("There is notthing in the gift card.\n");
 	    }
 
-    else if (argv[1][0] == '2') gift_card_json(thisone);
+       else if (argv[1][0] == '2'){
+         if(thisone != NULL)
+        {
+                gift_card_json(thisone);
+        }
+        else
+        {
+                printf("There is notthing in the gift card.\n");
+
+        }
+
+        }
+
 
 	return 0;
 }
