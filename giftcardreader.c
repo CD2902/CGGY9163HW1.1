@@ -102,9 +102,14 @@ void print_gift_card_info(struct this_gift_card *thisone) {
             animate(gcp_ptr->message, gcp_ptr->program);
 		}
 	}
-	
-//	printf("  Total value: %d\n\n",ret);
-	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
+
+	printf("  Total value: %d\n\n",ret);
+
+    free(gcd_ptr);
+    
+    printf("The function should end now.\n");
+//	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
+    return;
 }
 
 // Added to support web functionalities
@@ -286,6 +291,7 @@ int main(int argc, char **argv) {
 		if(thisone != NULL)
 	    {
 		    print_gift_card_info(thisone);
+            printf("Coming out from teh call.\n");
 	    }
 	    else
 	    {
