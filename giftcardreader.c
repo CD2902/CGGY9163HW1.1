@@ -108,6 +108,7 @@ void gift_card_json(struct this_gift_card *thisone) {
     struct gift_card_data *gcd_ptr;
     struct gift_card_record_data *gcrd_ptr;
     struct gift_card_amount_change *gcac_ptr;
+
     gcd_ptr = thisone->gift_card_data;
     printf("{\n");
     printf("  \"merchant_id\": \"%32.32s\",\n", gcd_ptr->merchant_id);
@@ -190,7 +191,7 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
                         if ( ret_val->num_bytes < 0 )
                 {
                          printf("Rejecting Negative Values\n");
-         	         return  NULL;
+         	         return NULL;
                  }
 
 		// Make something the size of the rest and read it in
@@ -281,7 +282,17 @@ int main(int argc, char **argv) {
 		    printf("There is notthing in the gift card.\n");
 	    }
 
-    else if (argv[1][0] == '2') gift_card_json(thisone);
+    else if (argv[1][0] == '2'){
+	 if(thisone != NULL)
+	{
+		gift_card_json(thisone);
+	}
+	else
+	{
+		printf("There is notthing in the gift card.\n");
 
+	}
+
+	}
 	return 0;
 }
